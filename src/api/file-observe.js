@@ -9,10 +9,19 @@
 import request from "@/utils/request";
 
 // 查询用户列表
-export function listAll(query) {
-    return request({
-        url: "/file-observe/list",
-        method: "get",
-        params: query,
-    });
+export function fileObserveList(query) {
+  return request({
+    url: "/file-observe/list",
+    method: "get",
+    params: query,
+  });
+}
+
+// 查询用户列表
+export function fileObserveCreate(data) {
+  return request({
+    url: "/file-observe/create222",
+    method: "post",
+    data: data,
+  });
 }

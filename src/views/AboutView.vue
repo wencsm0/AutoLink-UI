@@ -33,7 +33,7 @@
 </template>
 
 <script lang="ts" setup>
-import { listAll } from '@/api/file-observe';
+import { fileObserveList } from '@/api/file-observe';
 import { onMounted, ref, nextTick } from 'vue';
 const count = 3;
 
@@ -42,7 +42,7 @@ const loading = ref(false);
 const data = ref([]);
 const list = ref([]);
 onMounted(() => {
-  listAll().then(res => {
+  fileObserveList().then(res => {
     console.log(res)
     initLoading.value = false;
     data.value = res.data;
@@ -55,20 +55,6 @@ const onLoadMore = () => {
   list.value = data.value.concat(
     [...new Array(count)].map(() => ({ loading: true, name: {}, picture: {} })),
   );
-  fetch(fakeDataUrl)
-    .then(res => res.json())
-    .then(res => {
-      const newData = data.value.concat(res.results);
-      loading.value = false;
-      data.value = newData;
-      list.value = newData;
-      nextTick(() => {
-        // Resetting window's offsetTop so as to display react-virtualized demo underfloor.
-        // In real scene, you can using public method of react-virtualized:
-        // https://stackoverflow.com/questions/46700726/how-to-use-public-method-updateposition-of-react-virtualized
-        window.dispatchEvent(new Event('resize'));
-      });
-    });
 };
 </script>
 
