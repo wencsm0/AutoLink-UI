@@ -7,6 +7,7 @@
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
 import request from "@/utils/request";
+import { debounce, Debounce } from "@/utils/debounce";
 
 // 查询用户列表
 export function fileObserveList(query) {
@@ -18,10 +19,14 @@ export function fileObserveList(query) {
 }
 
 // 查询用户列表
+const fileObserveCreateDebounce = new Debounce();
 export function fileObserveCreate(data) {
-  return request({
-    url: "/file-observe/create222",
-    method: "post",
-    data: data,
-  });
+  return debounce(
+    {
+      url: "/file-observe/create",
+      method: "post",
+      data: data,
+    },
+    fileObserveCreateDebounce
+  );
 }

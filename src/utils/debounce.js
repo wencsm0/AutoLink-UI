@@ -1,7 +1,8 @@
-export default class Debounce {
+import request from "@/utils/request";
+
+export class Debounce {
   constructor(delay) {
     this.delay = delay ? delay : 500;
-
     this.timeOut = null;
   }
 
@@ -9,6 +10,7 @@ export default class Debounce {
     return new Promise((resolve, reject) => {
       if (this.timeout) {
         clearTimeout(this.timeout);
+        console.log("重复提交")
       }
 
       this.timeout = setTimeout(() => {
@@ -18,7 +20,14 @@ export default class Debounce {
   }
 }
 
+export const delay = () => 2000;
 export const sleep = (ms = delay()) =>
   new Promise((resolve) => setTimeout(resolve, ms));
 
-export const delay = () => 2000;
+/**
+ * 防抖
+ */
+export async function debounce(config, debounce) {
+  await debounce.debounceEnd();
+  return request(config);
+}

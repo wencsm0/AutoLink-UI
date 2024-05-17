@@ -7,7 +7,6 @@ import ModalForm from "../components/ModalForm.vue";
 
 const open = ref(false);
 const create = () => {
-  console.log("create");
   open.value = true;
 };
 
@@ -19,11 +18,6 @@ const handleCancel = () => {
   console.log("cancel1");
   open.value = false;
 };
-
-const send = (req) => {
-  console.log(req)
-  fileObserveCreate(req);
-};
 </script>
 
 <template>
@@ -34,7 +28,7 @@ const send = (req) => {
   <ModalForm
     v-if="open"
     title="Basic Modal"
-    :deal-func="send"
+    :deal-func="fileObserveCreate"
     @ok="handleOk"
     @cancel="handleCancel"
   ></ModalForm>

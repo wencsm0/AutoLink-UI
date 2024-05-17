@@ -1,6 +1,6 @@
 <template>
   <a-modal :open="true" :title="title" @ok="handleOk" @cancel="handleCancel">
-    <a-alert v-if="error" message="Error" type="error" show-icon />
+    <a-alert v-if="error" :message="errMsg" type="error" show-icon />
 
     <a-spin :spinning="spinning">
       <a-form
@@ -31,25 +31,29 @@
 <script setup>
 import { h, ref, reactive } from "vue";
 import { Form } from "ant-design-vue";
-import Debounce from "@/utils/debounce";
+const errMsg = ref("错误！");
 
+const emits = defineEmits(["ok", "cancel", "error"]);
 const props = defineProps(["title", "dealFunc"]);
 const title = ref(props.title);
 const dealFunc = ref(props.dealFunc).value;
 
-const emits = defineEmits(["ok", "cancel"]);
 const handleOk = () => {
   validate()
     .then(() => {
       spinning.value = true;
-
-      dealFunc(modelRef).then(() => console.log("success"));
-
-      emits("ok");
+      dealFunc(modelRef)
+        .then(() => {
+          emits("ok");
+        })
+        .catch((err) => {
+          errMsg.value = err.message;
+          error.value = true;
+          emits("error");
+        });
     })
     .catch((err) => {
-      error.value = true;
-      console.log(12312312312);
+      console.log(err);
     });
 };
 const handleCancel = () => {
